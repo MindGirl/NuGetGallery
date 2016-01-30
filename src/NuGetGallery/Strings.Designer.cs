@@ -134,6 +134,33 @@ namespace NuGetGallery {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SKIPPED! Package file blob {0} already exists.
+        /// </summary>
+        public static string CopyExternalPackages_PackageFileBlobAlreadyExists {
+            get {
+                return ResourceManager.GetString("CopyExternalPackages_PackageFileBlobAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saving the package file {0} to blob storage as {1}.
+        /// </summary>
+        public static string CopyExternalPackages_SavingPackageFileBlob {
+            get {
+                return ResourceManager.GetString("CopyExternalPackages_SavingPackageFileBlob", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find anyone with that email..
+        /// </summary>
+        public static string CouldNotFindAnyoneWithThatEmail {
+            get {
+                return ResourceManager.GetString("CouldNotFindAnyoneWithThatEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The external account has been removed.
         /// </summary>
         public static string CredentialRemoved {
@@ -312,6 +339,15 @@ namespace NuGetGallery {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error in sending mail : {0}.
+        /// </summary>
+        public static string ErrorInSendingMail {
+            get {
+                return ResourceManager.GetString("ErrorInSendingMail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your external account credential expired or you did not allow us access to your account. Try logging in again..
         /// </summary>
         public static string ExternalAccountLinkExpired {
@@ -330,11 +366,56 @@ namespace NuGetGallery {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to (404) Error - Not Found.
+        /// </summary>
+        public static string Http404NotFound {
+            get {
+                return ResourceManager.GetString("Http404NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Index does not exist.
+        /// </summary>
+        public static string IndexDoesNotExist {
+            get {
+                return ResourceManager.GetString("IndexDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The API key &apos;{0}&apos; is invalid..
         /// </summary>
         public static string InvalidApiKey {
             get {
                 return ResourceManager.GetString("InvalidApiKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Password Reset Token is not valid or expired..
+        /// </summary>
+        public static string InvalidOrExpiredPasswordResetToken {
+            get {
+                return ResourceManager.GetString("InvalidOrExpiredPasswordResetToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The package framework &apos;{0}&apos; is not supported. Frameworks within the portable profile are not allowed to have profiles themselves..
+        /// </summary>
+        public static string InvalidPortableFramework {
+            get {
+                return ResourceManager.GetString("InvalidPortableFramework", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job Log Blob name is invalid Bob! Expected [jobname].[yyyy-MM-dd].json or [jobname].json. Got: {0}.
+        /// </summary>
+        public static string JobLogBlobNameInvalid {
+            get {
+                return ResourceManager.GetString("JobLogBlobNameInvalid", resourceCulture);
             }
         }
         
@@ -393,11 +474,56 @@ namespace NuGetGallery {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Negative indexes are invalid..
+        /// </summary>
+        public static string NegativeIndexesAreInvalid {
+            get {
+                return ResourceManager.GetString("NegativeIndexesAreInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The ID of your package, &apos;{0}&apos;, is similar to the title of an existing package, which can cause confusion with our users. Please modify the ID of your package and try uploading again..
+        /// </summary>
+        public static string NewRegistrationIdMatchesExistingPackageTitle {
+            get {
+                return ResourceManager.GetString("NewRegistrationIdMatchesExistingPackageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A nuget package&apos;s {0} property may not be more than {1} characters long..
         /// </summary>
         public static string NuGetPackagePropertyTooLong {
             get {
                 return ResourceManager.GetString("NuGetPackagePropertyTooLong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Package {0} invalid: the release label can not only contain numerics..
+        /// </summary>
+        public static string NuGetPackageReleaseVersionContainsOnlyNumerics {
+            get {
+                return ResourceManager.GetString("NuGetPackageReleaseVersionContainsOnlyNumerics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Package {0} invalid: no &apos;.&apos; allowed in the release label..
+        /// </summary>
+        public static string NuGetPackageReleaseVersionWithDot {
+            get {
+                return ResourceManager.GetString("NuGetPackageReleaseVersionWithDot", resourceCulture);
             }
         }
         
@@ -425,6 +551,15 @@ namespace NuGetGallery {
         public static string PackageIsAlreadyCurated {
             get {
                 return ResourceManager.GetString("PackageIsAlreadyCurated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The package is missing required data..
+        /// </summary>
+        public static string PackageIsMissingRequiredData {
+            get {
+                return ResourceManager.GetString("PackageIsMissingRequiredData", resourceCulture);
             }
         }
         
@@ -510,6 +645,24 @@ namespace NuGetGallery {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The title of your package, &apos;{0}&apos;, is similar to the ID of an existing package, which can cause confusion with our users. Please modify the title of your package and try uploading again..
+        /// </summary>
+        public static string TitleMatchesExistingRegistration {
+            get {
+                return ResourceManager.GetString("TitleMatchesExistingRegistration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Token expiration should give the user at least a minute to change their password.
+        /// </summary>
+        public static string TokenExpirationShouldGiveUser1MinuteToChangePassword {
+            get {
+                return ResourceManager.GetString("TokenExpirationShouldGiveUser1MinuteToChangePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User is not authorized.
         /// </summary>
         public static string Unauthorized {
@@ -546,6 +699,15 @@ namespace NuGetGallery {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The NuGet package contains an invaid .nuspec file. The error encountered was:&apos;{0}&apos;. Correct the error and try again..
+        /// </summary>
+        public static string UploadPackage_InvalidNuspec {
+            get {
+                return ResourceManager.GetString("UploadPackage_InvalidNuspec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This package requires version &apos;{0}&apos; of NuGet, which this gallery does not currently support. Please contact us if you have questions..
         /// </summary>
         public static string UploadPackage_MinClientVersionOutOfRange {
@@ -560,6 +722,15 @@ namespace NuGetGallery {
         public static string UserIsNotYetConfirmed {
             get {
                 return ResourceManager.GetString("UserIsNotYetConfirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A user key is required..
+        /// </summary>
+        public static string UserKeyIsRequired {
+            get {
+                return ResourceManager.GetString("UserKeyIsRequired", resourceCulture);
             }
         }
         
@@ -587,6 +758,15 @@ namespace NuGetGallery {
         public static string UserNotFound {
             get {
                 return ResourceManager.GetString("UserNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }

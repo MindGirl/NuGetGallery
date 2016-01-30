@@ -154,7 +154,7 @@ namespace NuGetGallery
                     return SendPasswordResetEmail(user, forgotPassword: true);
                 }
 
-                ModelState.AddModelError("Email", "Could not find anyone with that email.");
+                ModelState.AddModelError("Email", Strings.CouldNotFindAnyoneWithThatEmail);
             }
 
             return View(model);
@@ -190,20 +190,31 @@ namespace NuGetGallery
             // By having this value present in the dictionary BUT null, we don't put "returnUrl" on the Login link at all
             ViewData[Constants.ReturnUrlViewDataKey] = null;
 
-            var cred = await AuthService.ResetPasswordWithToken(username, token, model.NewPassword);
-            ViewBag.ResetTokenValid = cred != null;
             ViewBag.ForgotPassword = forgot;
 
+            Credential credential = null;
+            try
+            {
+                credential = await AuthService.ResetPasswordWithToken(username, token, model.NewPassword);
+            }
+            catch (InvalidOperationException ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                return View(model);
+            }
+            
+            ViewBag.ResetTokenValid = credential != null;
+            
             if (!ViewBag.ResetTokenValid)
             {
-                ModelState.AddModelError("", "The Password Reset Token is not valid or expired.");
+                ModelState.AddModelError("", Strings.InvalidOrExpiredPasswordResetToken);
                 return View(model);
             }
 
-            if (cred != null && !forgot)
+            if (credential != null && !forgot)
             {
                 // Setting a password, so notify the user
-                MessageService.SendCredentialAddedNotice(cred.User, cred);
+                MessageService.SendCredentialAddedNotice(credential.User, credential);
             }
 
             return RedirectToAction(

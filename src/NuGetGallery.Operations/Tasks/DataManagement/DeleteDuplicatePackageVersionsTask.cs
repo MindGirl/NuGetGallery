@@ -52,7 +52,7 @@ namespace NuGetGallery.Operations.Tasks
 
                 // Group by Id and and SemVer
                 Log.Info("Grouping by Package ID and Actual Version...");
-                var groups = packages.GroupBy(p => new { p.Id, Version = SemanticVersionExtensions.Normalize(p.Version) });
+                var groups = packages.GroupBy(p => new { p.Id, Version = NuGetVersionNormalizer.Normalize(p.Version) });
 
                 // Find any groups with more than one entry
                 Log.Info("Finding Duplicates...");
@@ -135,7 +135,7 @@ namespace NuGetGallery.Operations.Tasks
                 WhatIf = WhatIf,
                 PackageId = package.Id,
                 PackageVersion = package.Version,
-                Reason = String.Format("duplicate package versions ({0})", subreason)
+                Reason = $"duplicate package versions ({subreason})"
             }.Execute();
         }
     }

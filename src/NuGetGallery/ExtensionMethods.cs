@@ -9,7 +9,6 @@ using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net.Mail;
-using System.Runtime.Versioning;
 using System.Security;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -20,7 +19,9 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.WebPages;
 using Microsoft.Owin;
-using NuGet;
+using NuGet.Frameworks;
+using NuGet.Packaging;
+using NuGetGallery.Packaging;
 
 namespace NuGetGallery
 {
@@ -83,6 +84,35 @@ namespace NuGetGallery
             return String.Empty;
         }
 
+        public static IEnumerable<PackageDependency> AsPackageDependencyEnumerable(this IEnumerable<PackageDependencyGroup> dependencyGroups)
+        {
+            foreach (var dependencyGroup in dependencyGroups)
+            {
+                if (!dependencyGroup.Packages.Any())
+                {
+                    yield return new PackageDependency
+                    {
+                        Id = null,
+                        VersionSpec = null,
+                        TargetFramework = dependencyGroup.TargetFramework.ToShortNameOrNull()
+                    };
+                }
+                else
+                {
+                    foreach (var dependency in dependencyGroup.Packages.Select(
+                        d => new {d.Id, d.VersionRange, dependencyGroup.TargetFramework}))
+                    {
+                        yield return new PackageDependency
+                        {
+                            Id = dependency.Id,
+                            VersionSpec = dependency.VersionRange?.ToString(),
+                            TargetFramework = dependency.TargetFramework.ToShortNameOrNull()
+                        };
+                    }
+                }
+            }
+        }
+
         public static string Flatten(this IEnumerable<string> list)
         {
             if (list == null)
@@ -93,39 +123,10 @@ namespace NuGetGallery
             return String.Join(", ", list.ToArray());
         }
 
-        public static string Flatten(this IEnumerable<PackageDependencySet> dependencySets)
+        public static string Flatten(this IEnumerable<PackageDependencyGroup> dependencyGroups)
         {
-            var dependencies = new List<dynamic>();
-
-            foreach (var dependencySet in dependencySets)
-            {
-                if (dependencySet.Dependencies.Count == 0)
-                {
-                    dependencies.Add(
-                        new
-                            {
-                                Id = (string)null,
-                                VersionSpec = (string)null,
-                                TargetFramework =
-                            dependencySet.TargetFramework == null ? null : VersionUtility.GetShortFrameworkName(dependencySet.TargetFramework)
-                            });
-                }
-                else
-                {
-                    foreach (var dependency in dependencySet.Dependencies.Select(d => new { d.Id, d.VersionSpec, dependencySet.TargetFramework }))
-                    {
-                        dependencies.Add(
-                            new
-                                {
-                                    dependency.Id,
-                                    VersionSpec = dependency.VersionSpec == null ? null : dependency.VersionSpec.ToString(),
-                                    TargetFramework =
-                                dependency.TargetFramework == null ? null : VersionUtility.GetShortFrameworkName(dependency.TargetFramework)
-                                });
-                    }
-                }
-            }
-            return FlattenDependencies(dependencies);
+            return FlattenDependencies(
+                AsPackageDependencyEnumerable(dependencyGroups).ToList());
         }
 
         public static string Flatten(this ICollection<PackageDependency> dependencies)
@@ -185,7 +186,7 @@ namespace NuGetGallery
         {
             if (package == null)
             {
-                throw new ArgumentNullException("package");
+                throw new ArgumentNullException(nameof(package));
             }
             if (user == null || user.Identity == null)
             {
@@ -198,7 +199,7 @@ namespace NuGetGallery
         {
             if (package == null)
             {
-                throw new ArgumentNullException("package");
+                throw new ArgumentNullException(nameof(package));
             }
             if (user == null)
             {
@@ -217,7 +218,7 @@ namespace NuGetGallery
         {
             if (source == null)
             {
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             }
 
             int descIndex = sortExpression.IndexOf(" desc", StringComparison.OrdinalIgnoreCase);
@@ -265,31 +266,66 @@ namespace NuGetGallery
             return modelState != null && modelState.Errors != null && modelState.Errors.Count > 0;
         }
 
-        public static string ToShortNameOrNull(this FrameworkName frameworkName)
-        {
-            return frameworkName == null ? null : VersionUtility.GetShortFrameworkName(frameworkName);
-        }
-
-        public static string ToFriendlyName(this FrameworkName frameworkName)
+        public static string ToShortNameOrNull(this NuGetFramework frameworkName)
         {
             if (frameworkName == null)
             {
-                throw new ArgumentNullException("frameworkName");
+                return null;
+            }
+
+            var shortFolderName = frameworkName.GetShortFolderName();
+
+            // If the shortFolderName is "any", we want to return null to preserve NuGet.Core
+            // compatibility in the V2 feed.
+            if (String.Equals(shortFolderName, "any", StringComparison.OrdinalIgnoreCase))
+            {
+                return null;
+            }
+
+            return shortFolderName;
+        }
+
+        public static string ToFriendlyName(this NuGetFramework frameworkName, bool allowRecurseProfile = true)
+        {
+            if (frameworkName == null)
+            {
+                throw new ArgumentNullException(nameof(frameworkName));
             }
 
             var sb = new StringBuilder();
-            if (String.Equals(frameworkName.Identifier, ".NETPortable", StringComparison.OrdinalIgnoreCase))
+            if (String.Equals(frameworkName.Framework, ".NETPortable", StringComparison.OrdinalIgnoreCase))
             {
-                sb.Append("Portable Class Library (");
+                sb.Append("Portable Class Library");
 
                 // Recursively parse the profile
-                var subprofiles = frameworkName.Profile.Split('+');
-                sb.Append(String.Join(", ", subprofiles.Select(s => VersionUtility.ParseFrameworkName(s).ToFriendlyName())));
-                sb.Append(")");
+                if (allowRecurseProfile)
+                {
+                    sb.Append(" (");
+
+                    var profiles = frameworkName.GetShortFolderName().Replace("portable-", string.Empty).Split('+');
+                    sb.Append(String.Join(", ",
+                        profiles.Select(s => NuGetFramework.Parse(s).ToFriendlyName(allowRecurseProfile: false))));
+
+                    sb.Append(")");
+                }
             }
             else
             {
-                sb.AppendFormat("{0} {1}", frameworkName.Identifier, frameworkName.Version);
+                string version = null;
+                if (frameworkName.Version.Build == 0)
+                {
+                    version = frameworkName.Version.ToString(2);
+                }
+                else if (frameworkName.Version.Revision == 0)
+                {
+                    version = frameworkName.Version.ToString(3);
+                }
+                else
+                {
+                    version = frameworkName.Version.ToString();
+                }
+
+                sb.AppendFormat("{0} {1}", frameworkName.Framework, version);
                 if (!String.IsNullOrEmpty(frameworkName.Profile))
                 {
                     sb.AppendFormat(" {0}", frameworkName.Profile);

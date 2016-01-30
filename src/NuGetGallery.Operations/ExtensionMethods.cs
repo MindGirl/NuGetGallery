@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Versioning;
 using NuGet;
+using NuGet.Frameworks;
 
 namespace NuGetGallery.Operations
 {
@@ -26,10 +27,24 @@ namespace NuGetGallery.Operations
             }
             return items.Any(predicate);
         }
-        
-        public static string ToShortNameOrNull(this FrameworkName frameworkName)
+
+        public static string ToShortNameOrNull(this NuGetFramework frameworkName)
         {
-            return frameworkName == null ? null : VersionUtility.GetShortFrameworkName(frameworkName);
+            if (frameworkName == null)
+            {
+                return null;
+            }
+
+            var shortFolderName = frameworkName.GetShortFolderName();
+
+            // If the shortFolderName is "any", we want to return null to preserve NuGet.Core
+            // compatibility in the V2 feed.
+            if (String.Equals(shortFolderName, "any", StringComparison.OrdinalIgnoreCase))
+            {
+                return null;
+            }
+
+            return shortFolderName;
         }
 
         public static string ToFriendlyDateTimeString(this DateTime self)

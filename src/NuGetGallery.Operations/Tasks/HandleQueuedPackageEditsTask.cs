@@ -8,7 +8,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
 using Microsoft.WindowsAzure.Storage.Blob;
-using NuGet;
 using NuGetGallery.Packaging;
 
 namespace NuGetGallery.Operations.Tasks
@@ -72,7 +71,7 @@ namespace NuGetGallery.Operations.Tasks
             var originalPackageBackupBlob = packagesContainer.GetBlockBlobReference(originalPackageFileName);
             var latestPackageBlob = packagesContainer.GetBlockBlobReference(latestPackageFileName);
 
-            var edits = new List<Action<ManifestMetadata>>
+            var edits = new List<Action<ManifestEdit>>
             { 
                 (m) => { m.Authors = edit.Authors; },
                 (m) => { m.Copyright = edit.Copyright; },
@@ -101,7 +100,7 @@ namespace NuGetGallery.Operations.Tasks
                 if (nr != 1)
                 {
                     throw new Exception(
-                        String.Format("Something went terribly wrong, only one entity should be updated but actually {0} entities were updated", nr));
+                        $"Something went terribly wrong, only one entity should be updated but actually {nr} entities were updated");
                 }
             }
 
@@ -202,7 +201,7 @@ namespace NuGetGallery.Operations.Tasks
 
                         if (errorEdit != null)
                         {
-                            errorEdit.LastError = string.Format("{0} : {1}", e.GetType(), e);
+                            errorEdit.LastError = $"{e.GetType()} : {e}";
                             errorContext.SaveChanges();
                         }
                         else
@@ -244,7 +243,7 @@ namespace NuGetGallery.Operations.Tasks
 
                     if (state.Status != CopyStatus.Success)
                     {
-                        string msg = string.Format("Blob copy failed: CopyState={0}", state.StatusDescription);
+                        string msg = $"Blob copy failed: CopyState={state.StatusDescription}";
                         Log.Error("(error) " + msg);
                         throw new BlobBackupFailedException(msg);
                     }
