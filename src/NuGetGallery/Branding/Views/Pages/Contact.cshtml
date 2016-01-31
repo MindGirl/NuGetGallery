@@ -1,0 +1,60 @@
+﻿@{
+    ViewBag.Title = "Contact Us";
+}
+<article class="contact">
+    <h2>
+        Contact Us
+    </h2>
+    <p>
+        Need help with NuGet? Let us know!
+    </p>
+
+    <h3>Having problems using a specific package?</h3>
+    <p>
+        If you're having trouble installing a specific package, try contacting the owner of that package first.
+        You can reach them using the "Contact Owners" link on the package details page.
+    </p>
+
+    <h3>Is a package violating a license or otherwise abusive?</h3>
+    <p>
+        If you feel that a package is violating the license of software you own or is violating our terms of service,
+        use the "Report Abuse" link on the package details page to report it directly to us.
+    </p>
+
+    <h3>Having issues working with @Config.Current.Brand?</h3>
+    <p>
+        Before reaching out to NuGet support, check out the <a href="http://docs.nuget.org/consume/nuget-faq#managing-packages-in-nuget.org">FAQ</a>.
+    </p>
+
+    <h3>Found a bug in NuGet or the website @Config.Current.Brand?</h3>
+    <p>
+        If you're having trouble with the <strong>@Config.Current.Brand Website</strong>,
+        file a bug on the NuGet Gallery <a href="https://github.com/NuGet/NuGetGallery/issues">Issue Tracker</a>.
+    </p>
+    <p>
+        If you're having trouble with the <strong>NuGet client tools</strong> (the Visual Studio extension, NuGet.exe command line tool, etc.),
+        file a bug on the NuGet Client <a href="https://github.com/NuGet/Home/issues">Issue Tracker</a>
+    </p>
+
+    <h3>Want to change your @Config.Current.Brand username?</h3>
+    <p>
+        No need to contact support. Create a new user and transfer ownership of your packages to it.
+    </p>
+
+    <h3>Talk to the NuGet development team and wider NuGet community</h3>
+    <p>
+        Need help with your @Config.Current.Brand account? Please feel free to <span id="emailUs"></span>
+    </p>
+</article>
+
+@section BottomScripts {
+    <script type="text/javascript">
+        $(function () {
+            var part1 = "support";
+            var part2 = "hbb-gmbh.de";
+            var part3 = "email us";
+            var link = $("<a>").attr("href", "mailto:" + part1 + "@@" + part2).text(part3);
+            $("#emailUs").append(link);
+        });
+    </script>
+}

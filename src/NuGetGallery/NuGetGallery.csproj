@@ -24,7 +24,8 @@
     <RunCodeAnalysis Condition=" '$(CodeAnalysis)' == 'true' ">true</RunCodeAnalysis>
     <OldToolsVersion>12.0</OldToolsVersion>
     <TargetFrameworkProfile />
-    <IISExpressSSLPort>443</IISExpressSSLPort>
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
     <DownloadNuGetExe>true</DownloadNuGetExe>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -1231,6 +1232,8 @@
     </Content>
     <Content Include="Areas\Admin\DynamicData\FieldTemplates\Url_Edit.ascx" />
     <Content Include="Areas\Admin\DynamicData\PageTemplates\ListDetails.aspx" />
+    <Content Include="Branding\Content\Images\headerbackground.png" />
+    <Content Include="Branding\Content\Layout.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -1437,6 +1440,17 @@
     <Content Include="Public\Blocked.html" />
     <Content Include="Scripts\d3.v3.js" />
     <Content Include="Scripts\d3.v3.min.js" />
+    <Content Include="Branding\Views\Authentication\LogOn.cshtml" />
+    <Content Include="Branding\Views\Authentication\_SignIn.cshtml" />
+    <Content Include="Branding\Views\Packages\DisplayPackage.cshtml" />
+    <Content Include="Branding\Views\Pages\Contact.cshtml" />
+    <Content Include="Branding\Views\Users\Account.cshtml" />
+    <Content Include="Branding\Views\Users\ForgotPassword.cshtml" />
+    <Content Include="Branding\Views\Users\PasswordChanged.cshtml" />
+    <Content Include="Branding\Views\Users\PasswordSent.cshtml" />
+    <Content Include="Branding\Views\Users\Profiles.cshtml" />
+    <Content Include="Branding\Views\Users\ResetPassword.cshtml" />
+    <Content Include="Branding\Views\Users\Thanks.cshtml" />
     <None Include="Scripts\jquery-1.11.0.intellisense.js" />
     <Content Include="Scripts\jquery-1.11.0.js" />
     <Content Include="Scripts\jquery-1.11.0.min.js" />
@@ -1563,7 +1577,6 @@
     <Content Include="Content\font\fontawesome-webfont.woff" />
     <Content Include="Content\font\FontAwesome.otf" />
     <Content Include="packages.config" />
-    <None Include="Properties\PublishProfiles\nuget-staging-frontend.pubxml" />
     <Content Include="Scripts\perpackagestatsgraphs.js" />
     <Content Include="Scripts\statsgraphs.js" />
     <Content Include="Scripts\nugetgallery.js" />
@@ -1719,6 +1732,7 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\DynamicData\CustomPages\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NuGet.Services.Search.Client\NuGet.Services.Search.Client.csproj">
@@ -1748,7 +1762,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>80</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://nuget.localtest.me</IISUrl>
+          <IISUrl>http://localhost:28000/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
